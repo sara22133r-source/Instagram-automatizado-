@@ -3,3 +3,5 @@
 Flask
 requests
 gunicorn
+Flask-SQLAlchemy  # Simplifica el uso de SQLAlchemy con Flask
+psycopg2-binary   # Adaptador para PostgreSQL
