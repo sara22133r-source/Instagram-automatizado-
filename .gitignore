@@ -1,0 +1,20 @@
+# .gitignore
+
+# Entornos virtuales (el más importante)
+/venv
+.env
+
+# Archivos de Python
+__pycache__
+*.pyc
+
+# IDEs
+.vscode
+.idea
+
+# Archivos de base de datos local (si usas SQLite)
+*.db
+
+# Archivos de sesión y log
+logs/
+.DS_Store
