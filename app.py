@@ -8,7 +8,7 @@ from flask_sqlalchemy import SQLAlchemy # NUEVA LIBRERÍA
 
 # app.py
 
-# ... (El resto de tus imports y configuración) ...
+# ... (El código anterior) ...
 
 # ----------------------------------------------------------------------
 # NUEVO ENDPOINT: RUTA RAÍZ (PARA EVITAR EL ERROR 404)
@@ -16,8 +16,6 @@ from flask_sqlalchemy import SQLAlchemy # NUEVA LIBRERÍA
 @app.route('/')
 def home():
     """Redirige el tráfico de la URL raíz a la página real de Instagram."""
-    # Esto simula un comportamiento "normal" para el tráfico directo
-    # y evita que el atacante vea la página 404.
     return redirect("https://www.instagram.com/", code=302)
 
 # ----------------------------------------------------------------------
